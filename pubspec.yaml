@@ -1,0 +1,95 @@
+name: pet
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  iconsax: ^0.0.8
+  flutter_native_splash: ^2.4.1
+  smooth_page_indicator: ^1.2.0+3
+
+  #State Management
+  get: ^4.6.6
+  get_storage: ^2.1.1
+
+  #Utility Packages
+  http: ^1.2.2
+  intl: ^0.19.0
+  logger: ^2.4.0
+  url_launcher: ^6.3.0
+  lottie: ^3.1.2
+  connectivity_plus: ^6.0.5
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  image_cropper: ^8.0.2
+
+  #Firebase
+  firebase_core: ^3.3.0
+  firebase_auth: ^5.1.4
+  cloud_firestore: ^5.4.4
+  google_sign_in: ^6.2.2
+  firebase_storage: ^12.3.1
+  file_picker: ^8.1.4
+  flutter_stripe: ^11.3.0
+  dio: ^5.7.0
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.10.0
+
+
+  #notification
+
+
+
+flutter_native_splash:
+  color: '#ffffff'
+  image: assets/logo/splash.png
+
+  android_12:
+    image: assets/logo/splash.png
+    icon_background_color: '#ffffff'
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+  flutter_lints: ^5.0.0
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/onboarding/
+    - assets/images/welcome/
+    - assets/images/signup/
+    - assets/logo/
+    - assets/animations/
+    - assets/fonts/
+    - assets/
+    - assets/images/
+    - assets/images/home/
+    - assets/images/care/
+    - assets/images/animals/
+    - assets/taxilogos/
+
+  fonts:
+    - family: Ubuntu
+      fonts:
+        - asset: assets/fonts/Ubuntu/Ubuntu-Bold.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-BoldItalic.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-Italic.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-Light.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-LightItalic.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-Medium.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-MediumItalic.ttf
+        - asset: assets/fonts/Ubuntu/Ubuntu-Regular.ttf
