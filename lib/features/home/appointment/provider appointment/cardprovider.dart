@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Assuming Firestore is being used
 import 'package:pet/features/home/appointment/provider%20appointment/upcomingprovider.dart';
+import 'package:pet/features/home/appointment/upcoming%20Appointments.dart';
 
 class CardAppointmentProvider extends StatelessWidget {
   final String appointmentId;
@@ -97,7 +98,7 @@ void markAppointmentAsDone(String appointmentId, BuildContext context) {
     // Navigate to the completed appointments screen
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CompleteProviderAppointmentsScreen ), // Navigate to CompletedAppointmentsScreen
+      MaterialPageRoute(builder: (context) => CompletedAppointmentsScreen()), // Navigate to CompletedAppointmentsScreen
     );
   }).catchError((error) {
     ScaffoldMessenger.of(context).showSnackBar(
