@@ -15,9 +15,11 @@ class UpcomingProviderScreen extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('appointments')
-          .where('providerEmail', isEqualTo: currentProviderEmail) // Filter appointments by provider email
-          .orderBy('appointmentDate', descending: false) // Order by appointment date
+          .where('providerEmail', isEqualTo: currentProviderEmail)
+          // .where('status', isNotEqualTo: 'completed') // Fetch appointments not marked as completed
+          .orderBy('appointmentDate', descending: false)
           .snapshots(),
+
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -209,18 +211,84 @@ class _AppointmentsOverviewState extends State<AppointmentsOverview> {
 }
 
 
-
 class CompleteProviderAppointmentsScreen extends StatelessWidget {
-  const CompleteProviderAppointmentsScreen({super.key});
+  const CompleteProviderAppointmentsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Complete Provider Appointments")),
-      body: const Center(child: Text("Completed Provider Appointments List")),
+      appBar: AppBar(title: const Text("Completed Provider Appointments")),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('appointments')
+            .where('status', isEqualTo: 'completed') // Filter for completed appointments
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error fetching appointments'));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No completed appointments'));
+          }
+
+          final completedAppointments = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: completedAppointments.length,
+            itemBuilder: (context, index) {
+              final appointment = completedAppointments[index];
+              // final appointment = appointments[index];
+              final appointmentData = appointment.data() as Map<String, dynamic>;
+
+              // Extract user name by splitting the email
+              final userName = appointmentData['userEmail']?.split('@')[0] ?? 'Unknown User';
+              final address = appointmentData['address'] ?? 'Address not provided';
+
+              return CardAppointmentProvider(
+                appointmentId: appointment.id,
+                serviceName: appointment['serviceName'] ?? 'Service',
+                appointmentDate: (appointment['appointmentDate'] as Timestamp).toDate(),
+                appointmentTime: appointment['appointmentTime'] ?? 'Time',
+                userName: userName,
+                paymentMethod: appointmentData['paymentMethod'] ?? 'Unknown Payment',
+                address: address,
+                // modifyAppointment: () {
+                //   // Navigate to the updated ProviderModifyScreen
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => ProviderModifyScreen(
+                //         appointmentId: appointment.id,
+                //         appointmentDate: (appointmentData['appointmentDate'] as Timestamp).toDate(),
+                //         appointmentTime: appointmentData['appointmentTime'] ?? 'Time',
+                //       ),
+                //     ),
+                //   );
+                // },
+                // cancelAppointment: (appointmentId) {
+                //   // Navigate to the CancelAppointmentScreen
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => CancelAppointmentScreen(appointmentId: appointmentId),
+                //     ),
+                //   );
+                // },
+                // markAsDone: markAppointmentAsDone,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
+
 
 
 class CancelledAppointmentsScreen extends StatelessWidget {
